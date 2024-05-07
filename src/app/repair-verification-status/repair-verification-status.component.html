@@ -1,0 +1,39 @@
+<h2 class="alert alert-primary">defects -> Repair Verification Status</h2>
+<table class="table table-hover">
+  <thead class="table-dark">
+    <tr>
+      @for (c of cols; track c; let j = $index) {
+      <th>
+        <div (click)="toggleFilter(ddl)">{{ c.name }}</div>
+        <ul class="dropdown-menu" #ddl (mousedown)="$event.stopPropagation()">
+          @for (o of c.ddl; track o; let i = $index) {
+          <li>
+            <a class="dropdown-item">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="ck-{{ j }}-{{ i }}" [checked]="true" (change)="check(o, c, $event.target)" />
+                <label class="form-check-label" for="ck-{{ j }}-{{ i }}" style="display: block">{{ o }}</label>
+              </div>
+            </a>
+          </li>
+          }
+        </ul>
+      </th>
+      }
+      <th>control available</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (r of tfTbl; track r) {
+    <tr [attr.class]="r.ctrlDisabled ? 'table-secondary c-disabled' : ''">
+      <td>{{ r.isEdit }}</td>
+      <td>{{ r.isOtherOfficer }}</td>
+      <td>{{ r.isOfficerAfter24Hrs }}</td>
+      <td>{{ r.currentStatus }}</td>
+      <td>{{ r.daysSinceCvirStarted >= 15 ? '>= 15' : '< 15' }}</td>
+      <td>{{ r.verificationStatus }}</td>
+      <td>{{ r.j }} [{{ r.j === 0 ? 'Pending' : r.j === 1 ? 'Not Received' : 'Received' }}]</td>
+      <td>{{ r.ctrlDisabled ? 'disabled' : 'enabled' }}</td>
+    </tr>
+    }
+  </tbody>
+</table>

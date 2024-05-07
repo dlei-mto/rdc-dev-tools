@@ -1,0 +1,218 @@
+<div class="container-fluid">
+  <div class="mt-3">
+    <div class="row align-items-start mb-3">
+      <div class="col">
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="inlineModeOptions" id="cvirMode1" [value]="modes[0]" [formControl]="fm.controls.mode" />
+          <label class="form-check-label" for="cvirMode1">{{ modes[0] }}</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="inlineModeOptions" id="cvirMode2" [value]="modes[1]" [formControl]="fm.controls.mode" />
+          <label class="form-check-label" for="cvirMode2">{{ modes[1] }}</label>
+        </div>
+      </div>
+      <ng-container *ngIf="fm.controls.mode.value === modes[0]">
+        <div class="col">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="inlineTypeOptions" id="cvirType1" [value]="types[0]" [formControl]="fm.controls.type" />
+            <label class="form-check-label" for="cvirType1">{{ types[0] }}</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="inlineTypeOptions" id="cvirType2" [value]="types[1]" [formControl]="fm.controls.type" />
+            <label class="form-check-label" for="cvirType2">{{ types[1] }}</label>
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="inlineRoleOptions" id="cvirRole1" [value]="roles[0]" [formControl]="fm.controls.role" />
+            <label class="form-check-label" for="cvirRole1">{{ roles[0] }}</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="inlineRoleOptions" id="cvirRole2" [value]="roles[1]" [formControl]="fm.controls.role" />
+            <label class="form-check-label" for="cvirRole2">{{ roles[1] }}</label>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+    <!-- <div class="row align-items-start mb-3">
+        <div class="col">
+          <div class="form-floating">
+            <select class="form-select" id="ddl0" [formControl]="fm.controls.mode">
+              <option *ngFor="let o of modes" [value]="o">{{ o }}</option>
+            </select>
+            <label for="ddl0">Mode</label>
+          </div>
+        </div>
+        <ng-container *ngIf="fm.controls.mode.value === modes[0]">
+          <div class="col">
+            <div class="form-floating">
+              <select class="form-select" id="ddl1" [formControl]="fm.controls.type">
+                <option *ngFor="let o of types" [value]="o">{{ o }}</option>
+              </select>
+              <label for="ddl1">Type</label>
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-floating">
+              <select class="form-select" id="ddl2" [formControl]="fm.controls.role">
+                <option *ngFor="let o of roles" [value]="o">{{ o }}</option>
+              </select>
+              <label for="ddl2">Role</label>
+            </div>
+          </div>
+        </ng-container>
+      </div> -->
+    <ng-container *ngIf="fm.controls.mode.value === modes[0]">
+      <div class="row align-items-start mb-3">
+        <div class="col">
+          <div class="form-floating">
+            <select class="form-select" id="ddl3" [formControl]="fm.controls.rv">
+              <option *ngFor="let o of rvs" [value]="o">{{ o }}</option>
+            </select>
+            <label for="ddl3">Has RV</label>
+          </div>
+        </div>
+        <ng-container *ngIf="fm.controls.type.value !== types[0]">
+          <div class="col" *ngIf="fm.controls.rv.value === rvs[0]">
+            <div class="form-floating">
+              <select class="form-select" id="ddl4" [formControl]="fm.controls.rvStatus">
+                <option *ngFor="let o of rvStatuses" [value]="o.id">
+                  {{ o.name }}
+                </option>
+              </select>
+              <label for="ddl4">RV Status</label>
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-floating">
+              <select class="form-select" id="ddl5" [formControl]="fm.controls.modificationType">
+                <option *ngFor="let o of modificationTypes" [value]="o">
+                  {{ o }}
+                </option>
+              </select>
+              <label for="ddl5">Modification Type</label>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+      <div class="row align-items-start mb-3">
+        <div class="col">
+          <div class="form-floating">
+            <select class="form-select" id="ddl6" [formControl]="fm.controls.cvorNscType">
+              <option *ngFor="let o of cvorNscList" [value]="o.id">
+                {{ o.name }}
+              </option>
+            </select>
+            <label for="ddl6">CVOR/NSC Type</label>
+          </div>
+        </div>
+        <div class="col-auto align-self-center">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" [formControl]="fm.controls.cvorNscTypeChanged" id="cvorNscTypeChanged" />
+            <label class="form-check-label" for="cvorNscTypeChanged">CVOR/NSC Type changed</label>
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-floating">
+            <select class="form-select" id="lvl" [formControl]="fm.controls.selectedLevel">
+              <option *ngFor="let o of inspectionLevels" [value]="o">
+                {{ o }}
+              </option>
+            </select>
+            <label for="lvl">Inspection Level</label>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+    <div class="row align-items-start mb-3">
+      <div class="col-auto align-self-center">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" [formControl]="fm.controls.cvorNscPopulated" id="cvorNscPopulated" />
+          <label class="form-check-label" for="cvorNscPopulated">cvorNscPopulated</label>
+        </div>
+      </div>
+      <div class="col-auto align-self-center">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" [formControl]="fm.controls.driverLicensePopulated" id="driverLicensePopulated" />
+          <label class="form-check-label" for="driverLicensePopulated">driverLicensePopulated</label>
+        </div>
+      </div>
+      <div class="col-auto align-self-center">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" [formControl]="fm.controls.plate1Populated" id="plate1Populated" />
+          <label class="form-check-label" for="plate1Populated">plate1Populated</label>
+        </div>
+      </div>
+      <div class="col-auto align-self-center">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" [formControl]="fm.controls.plate2Populated" id="plate2Populated" />
+          <label class="form-check-label" for="plate2Populated">plate2Populated</label>
+        </div>
+      </div>
+      <div class="col-auto align-self-center">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" [formControl]="fm.controls.plate3Populated" id="plate3Populated" />
+          <label class="form-check-label" for="plate3Populated">plate3Populated</label>
+        </div>
+      </div>
+      <div class="col-auto align-self-center">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" [formControl]="fm.controls.plate4Populated" id="plate4Populated" />
+          <label class="form-check-label" for="plate4Populated">plate4Populated</label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="input-group mb-3" *ngIf="fm.controls.type.value !== types[0]">
+    <label class="input-group-text" for="ddlPrev">Previous CvirStatus</label>
+    <select class="form-select" [ngClass]="['c_' + (fm.controls.prevCvirStatus.value | lowercase)]" id="ddlPrev" [formControl]="fm.controls.prevCvirStatus">
+      <option *ngFor="let o of prevCvirStatuses" [ngClass]="['c_' + (o | lowercase)]" [value]="o">
+        {{ o }}
+      </option>
+    </select>
+  </div>
+  <div class="alert alert-primary">
+    <label class="fs-2">CVIR Inspection Status</label>
+    <h1 class="display-1" [ngClass]="['c_' + (cvir.cvirStatus | lowercase)]">
+      <span [ngClass]="['c_' + (fm.controls.prevCvirStatus.value | lowercase)]">{{
+        fm.controls.type.value === types[0] ? '' : fm.controls.prevCvirStatus.value
+      }}</span>
+      =&gt; {{ cvir.cvirStatus }}
+    </h1>
+  </div>
+
+  <h2 class="alert alert-info" *ngIf="fm.controls.mode.value === modes[0]">
+    {{ fm.controls.mode.value }} | {{ fm.controls.type.value }} | {{ fm.controls.role.value }} |
+    {{ fm.controls.cvorNscTypeChanged.value ? 'CVOR/NSC Type changed' : 'CVOR/NSC Type NOT changed' }}
+  </h2>
+  <h2 class="alert alert-info" *ngIf="fm.controls.mode.value !== modes[0]">
+    {{ fm.controls.mode.value }}
+  </h2>
+  <table class="table table-hover">
+    <thead class="table-dark">
+      <tr>
+        <th>RV</th>
+        <th>RV status</th>
+        <th>modificationType</th>
+        <th>cvorNscType</th>
+        <th>prevCvirStatus</th>
+        <th>CvirStatus</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let r of outputTable" [ngClass]="{ 'table-active': r[0] }" (click)="onRowClick(r)">
+        <ng-container *ngFor="let c of r; let i = index">
+          <td *ngIf="i" [ngClass]="[i === r.length - 1 || i === r.length - 2 ? 'c_' + (c | lowercase) : '']">
+            {{ c }}
+          </td>
+        </ng-container>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div style="display: none">
+  <pre>{{ fm.value | json }}</pre>
+  <pre>{{ cvirObject | json }}</pre>
+  <pre>{{ cvir | json }}</pre>
+</div>
