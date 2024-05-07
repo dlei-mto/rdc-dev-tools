@@ -3,8 +3,8 @@
     <div class="row">
       <div class="col">
         <ul class="list-inline">
-          @for (item of [ { title: 'rdc-cvir-status', link: '/cvir-status/' }, { title: 'defects -> Repair Verification Status',
-          link: '/repair-verification-status' } ]; track item.title) {
+          @for (item of [ { title: 'rdc-cvir-status', link: './cvir-status/' }, { title: 'defects -> Repair Verification Status',
+          link: './repair-verification-status' } ]; track item.title) {
           <li class="list-inline-item">
             <a [href]="item.link" target="_self" rel="noopener">
               <span>{{ item.title }}</span>
