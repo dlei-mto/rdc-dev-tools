@@ -1,0 +1,1 @@
+import{Z as o,eb as a}from"./chunk-KRJZ5MGM.js";var c=(()=>{let e=class e{};e.\u0275fac=function(n){return new(n||e)},e.\u0275cmp=o({type:e,selectors:[["ng-component"]],standalone:!0,features:[a],decls:0,vars:0,template:function(n,i){},encapsulation:2});let t=e;return t})();export{c as HomeComponent};
