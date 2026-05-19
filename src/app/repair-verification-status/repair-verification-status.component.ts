@@ -1,6 +1,16 @@
 import { Component, ElementRef, HostListener, QueryList, ViewChildren } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+enum COLS {
+  EDIT = 0,
+  OTHER_OFFICER = 1,
+  OFFICER_AFTER_24HRS = 2,
+  J = 5,
+  CURRENT_STATUS = 3,
+  DAYS_SINCE_CVIR_STARTED = 4,
+  VERIFICATION_STATUS = 6
+}
+
 @Component({
   standalone: true,
   templateUrl: './repair-verification-status.component.html',
@@ -16,17 +26,17 @@ export class RepairVerificationStatusComponent {
     { name: 'isOfficerAfter24Hrs', ddl: [true, false], lst: [] },
     { name: 'currentStatus', ddl: ['OVERDUE', '~OVERDUE'], lst: [] },
     { name: 'daysSinceCvirStarted', ddl: [1, 15], lst: [] },
-    { name: 'verificationStatus', ddl: ['Not Received', 'Pending or Received'], lst: [] },
-    { name: 'control of Repair Verification Status', ddl: [0, 1, 2], lst: [] }
+    { name: 'Repair Verification Status', ddl: [0, 1, 2], lst: [] },
+    { name: 'Repair Verification Status (control)', ddl: ['Pending', 'Not Received', 'Received'], lst: [] }
   ].map(c => ({ ...c, lst: [...c.ddl] }));
 
-  private allTbl: any[] = this.cols[0].ddl.flatMap(a =>
-    this.cols[1].ddl.flatMap(b =>
-      this.cols[2].ddl.flatMap(c =>
-        this.cols[6].ddl.flatMap(d =>
-          this.cols[3].ddl.flatMap(e =>
-            this.cols[4].ddl.flatMap(f =>
-              this.cols[5].ddl.map(g => {
+  private allTbl: any[] = this.cols[COLS.EDIT].ddl.flatMap(a =>
+    this.cols[COLS.OTHER_OFFICER].ddl.flatMap(b =>
+      this.cols[COLS.OFFICER_AFTER_24HRS].ddl.flatMap(c =>
+        this.cols[COLS.J].ddl.flatMap(d =>
+          this.cols[COLS.CURRENT_STATUS].ddl.flatMap(e =>
+            this.cols[COLS.DAYS_SINCE_CVIR_STARTED].ddl.flatMap(f =>
+              this.cols[COLS.VERIFICATION_STATUS].ddl.map(g => {
                 return {
                   isEdit: a,
                   isOtherOfficer: b,
@@ -93,13 +103,13 @@ export class RepairVerificationStatusComponent {
     this.tfTbl = this.allTbl
       .filter(
         r =>
-          this.cols[0].lst.includes(r.isEdit) &&
-          this.cols[1].lst.includes(r.isOtherOfficer) &&
-          this.cols[2].lst.includes(r.isOfficerAfter24Hrs) &&
-          this.cols[6].lst.includes(r.j) &&
-          this.cols[3].lst.includes(r.currentStatus) &&
-          this.cols[4].lst.includes(r.daysSinceCvirStarted) &&
-          this.cols[5].lst.includes(r.verificationStatus)
+          this.cols[COLS.EDIT].lst.includes(r.isEdit) &&
+          this.cols[COLS.OTHER_OFFICER].lst.includes(r.isOtherOfficer) &&
+          this.cols[COLS.OFFICER_AFTER_24HRS].lst.includes(r.isOfficerAfter24Hrs) &&
+          this.cols[COLS.J].lst.includes(r.j) &&
+          this.cols[COLS.CURRENT_STATUS].lst.includes(r.currentStatus) &&
+          this.cols[COLS.DAYS_SINCE_CVIR_STARTED].lst.includes(r.daysSinceCvirStarted) &&
+          this.cols[COLS.VERIFICATION_STATUS].lst.includes(r.verificationStatus)
       )
       .map(r => {
         r.ctrlDisabled = this.#logic4notreceived(r);
@@ -108,7 +118,7 @@ export class RepairVerificationStatusComponent {
   }
 
   @HostListener('window:mousedown', ['$event'])
-  private handleEvent(evt: MouseEvent) {
+  protected handleEvent(evt: MouseEvent) {
     evt.stopPropagation();
     if (this.#curMenu) {
       this.#curMenu.classList.remove('show');
