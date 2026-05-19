@@ -3,37 +3,43 @@
   <thead class="table-dark">
     <tr>
       @for (c of cols; track c; let j = $index) {
-      <th>
-        <div (click)="toggleFilter(ddl)">{{ c.name }}</div>
-        <ul class="dropdown-menu" #ddl (mousedown)="$event.stopPropagation()">
-          @for (o of c.ddl; track o; let i = $index) {
-          <li>
-            <a class="dropdown-item">
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="ck-{{ j }}-{{ i }}" [checked]="true" (change)="check(o, c, $event.target)" />
-                <label class="form-check-label" for="ck-{{ j }}-{{ i }}" style="display: block">{{ o }}</label>
-              </div>
-            </a>
-          </li>
-          }
-        </ul>
-      </th>
+        <th>
+          <div (click)="toggleFilter(ddl)">
+            {{ c.name }}
+            <!-- <i class="bi bi-funnel"></i> -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-funnel" viewBox="0 0 16 16">
+              <path
+                d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2z"
+              />
+            </svg>
+          </div>
+          <ul class="dropdown-menu" #ddl (mousedown)="$event.stopPropagation()">
+            @for (o of c.ddl; track o; let i = $index) {
+              <li>
+                <a class="dropdown-item">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="ck-{{ j }}-{{ i }}" [checked]="true" (change)="check(o, c, $event.target)" />
+                    <label class="form-check-label" for="ck-{{ j }}-{{ i }}" style="display: block">{{ o }}</label>
+                  </div>
+                </a>
+              </li>
+            }
+          </ul>
+        </th>
       }
-      <th>control available</th>
     </tr>
   </thead>
   <tbody>
     @for (r of tfTbl; track r) {
-    <tr [attr.class]="r.ctrlDisabled ? 'table-secondary c-disabled' : ''">
-      <td>{{ r.isEdit }}</td>
-      <td>{{ r.isOtherOfficer }}</td>
-      <td>{{ r.isOfficerAfter24Hrs }}</td>
-      <td>{{ r.currentStatus }}</td>
-      <td>{{ r.daysSinceCvirStarted >= 15 ? '>= 15' : '< 15' }}</td>
-      <td>{{ r.verificationStatus }}</td>
-      <td>{{ r.j }} [{{ r.j === 0 ? 'Pending' : r.j === 1 ? 'Not Received' : 'Received' }}]</td>
-      <td>{{ r.ctrlDisabled ? 'disabled' : 'enabled' }}</td>
-    </tr>
+      <tr [attr.class]="r.ctrlDisabled ? 'table-secondary c-disabled' : ''">
+        <td>{{ r.isEdit }}</td>
+        <td>{{ r.isOtherOfficer }}</td>
+        <td>{{ r.isOfficerAfter24Hrs }}</td>
+        <td>{{ r.currentStatus }}</td>
+        <td>{{ r.daysSinceCvirStarted >= 15 ? '>= 15' : '< 15' }}</td>
+        <td>{{ r.j }} {{ r.j === 0 ? 'Pending' : r.j === 1 ? 'Not Received' : 'Received' }}</td>
+        <td>{{ r.verificationStatus }} [{{ r.ctrlDisabled ? 'disabled' : 'enabled' }}]</td>
+      </tr>
     }
   </tbody>
 </table>
