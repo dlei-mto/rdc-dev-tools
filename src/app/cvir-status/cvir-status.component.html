@@ -11,7 +11,7 @@
           <label class="form-check-label" for="cvirMode2">{{ modes[1] }}</label>
         </div>
       </div>
-      <ng-container *ngIf="fm.controls.mode.value === modes[0]">
+      @if (fm.controls.mode.value === modes[0]) {
         <div class="col">
           <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" name="inlineTypeOptions" id="cvirType1" [value]="types[0]" [formControl]="fm.controls.type" />
@@ -32,76 +32,86 @@
             <label class="form-check-label" for="cvirRole2">{{ roles[1] }}</label>
           </div>
         </div>
-      </ng-container>
+      }
     </div>
     <!-- <div class="row align-items-start mb-3">
+      <div class="col">
+        <div class="form-floating">
+          <select class="form-select" id="ddl0" [formControl]="fm.controls.mode">
+            <option *ngFor="let o of modes" [value]="o">{{ o }}</option>
+          </select>
+          <label for="ddl0">Mode</label>
+        </div>
+      </div>
+      <ng-container *ngIf="fm.controls.mode.value === modes[0]">
         <div class="col">
           <div class="form-floating">
-            <select class="form-select" id="ddl0" [formControl]="fm.controls.mode">
-              <option *ngFor="let o of modes" [value]="o">{{ o }}</option>
+            <select class="form-select" id="ddl1" [formControl]="fm.controls.type">
+              <option *ngFor="let o of types" [value]="o">{{ o }}</option>
             </select>
-            <label for="ddl0">Mode</label>
+            <label for="ddl1">Type</label>
           </div>
         </div>
-        <ng-container *ngIf="fm.controls.mode.value === modes[0]">
-          <div class="col">
-            <div class="form-floating">
-              <select class="form-select" id="ddl1" [formControl]="fm.controls.type">
-                <option *ngFor="let o of types" [value]="o">{{ o }}</option>
-              </select>
-              <label for="ddl1">Type</label>
-            </div>
+        <div class="col">
+          <div class="form-floating">
+            <select class="form-select" id="ddl2" [formControl]="fm.controls.role">
+              <option *ngFor="let o of roles" [value]="o">{{ o }}</option>
+            </select>
+            <label for="ddl2">Role</label>
           </div>
-          <div class="col">
-            <div class="form-floating">
-              <select class="form-select" id="ddl2" [formControl]="fm.controls.role">
-                <option *ngFor="let o of roles" [value]="o">{{ o }}</option>
-              </select>
-              <label for="ddl2">Role</label>
-            </div>
-          </div>
-        </ng-container>
-      </div> -->
-    <ng-container *ngIf="fm.controls.mode.value === modes[0]">
+        </div>
+      </ng-container>
+    </div> -->
+    @if (fm.controls.mode.value === modes[0]) {
       <div class="row align-items-start mb-3">
         <div class="col">
           <div class="form-floating">
             <select class="form-select" id="ddl3" [formControl]="fm.controls.rv">
-              <option *ngFor="let o of rvs" [value]="o">{{ o }}</option>
+              @for (o of rvs; track o) {
+                <option [value]="o">{{ o }}</option>
+              }
             </select>
             <label for="ddl3">Has RV</label>
           </div>
         </div>
-        <ng-container *ngIf="fm.controls.type.value !== types[0]">
-          <div class="col" *ngIf="fm.controls.rv.value === rvs[0]">
-            <div class="form-floating">
-              <select class="form-select" id="ddl4" [formControl]="fm.controls.rvStatus">
-                <option *ngFor="let o of rvStatuses" [value]="o.id">
-                  {{ o.name }}
-                </option>
-              </select>
-              <label for="ddl4">RV Status</label>
+        @if (fm.controls.type.value !== types[0]) {
+          @if (fm.controls.rv.value === rvs[0]) {
+            <div class="col">
+              <div class="form-floating">
+                <select class="form-select" id="ddl4" [formControl]="fm.controls.rvStatus">
+                  @for (o of rvStatuses; track o) {
+                    <option [value]="o.id">
+                      {{ o.name }}
+                    </option>
+                  }
+                </select>
+                <label for="ddl4">RV Status</label>
+              </div>
             </div>
-          </div>
+          }
           <div class="col">
             <div class="form-floating">
               <select class="form-select" id="ddl5" [formControl]="fm.controls.modificationType">
-                <option *ngFor="let o of modificationTypes" [value]="o">
-                  {{ o }}
-                </option>
+                @for (o of modificationTypes; track o) {
+                  <option [value]="o">
+                    {{ o }}
+                  </option>
+                }
               </select>
               <label for="ddl5">Modification Type</label>
             </div>
           </div>
-        </ng-container>
+        }
       </div>
       <div class="row align-items-start mb-3">
         <div class="col">
           <div class="form-floating">
             <select class="form-select" id="ddl6" [formControl]="fm.controls.cvorNscType">
-              <option *ngFor="let o of cvorNscList" [value]="o.id">
-                {{ o.name }}
-              </option>
+              @for (o of cvorNscList; track o) {
+                <option [value]="o.id">
+                  {{ o.name }}
+                </option>
+              }
             </select>
             <label for="ddl6">CVOR/NSC Type</label>
           </div>
@@ -115,15 +125,17 @@
         <div class="col">
           <div class="form-floating">
             <select class="form-select" id="lvl" [formControl]="fm.controls.selectedLevel">
-              <option *ngFor="let o of inspectionLevels" [value]="o">
-                {{ o }}
-              </option>
+              @for (o of inspectionLevels; track o) {
+                <option [value]="o">
+                  {{ o }}
+                </option>
+              }
             </select>
             <label for="lvl">Inspection Level</label>
           </div>
         </div>
       </div>
-    </ng-container>
+    }
     <div class="row align-items-start mb-3">
       <div class="col-auto align-self-center">
         <div class="form-check">
@@ -163,14 +175,18 @@
       </div>
     </div>
   </div>
-  <div class="input-group mb-3" *ngIf="fm.controls.type.value !== types[0]">
-    <label class="input-group-text" for="ddlPrev">Previous CvirStatus</label>
-    <select class="form-select" [ngClass]="['c_' + (fm.controls.prevCvirStatus.value | lowercase)]" id="ddlPrev" [formControl]="fm.controls.prevCvirStatus">
-      <option *ngFor="let o of prevCvirStatuses" [ngClass]="['c_' + (o | lowercase)]" [value]="o">
-        {{ o }}
-      </option>
-    </select>
-  </div>
+  @if (fm.controls.type.value !== types[0]) {
+    <div class="input-group mb-3">
+      <label class="input-group-text" for="ddlPrev">Previous CvirStatus</label>
+      <select class="form-select" [ngClass]="['c_' + (fm.controls.prevCvirStatus.value | lowercase)]" id="ddlPrev" [formControl]="fm.controls.prevCvirStatus">
+        @for (o of prevCvirStatuses; track o) {
+          <option [ngClass]="['c_' + (o | lowercase)]" [value]="o">
+            {{ o }}
+          </option>
+        }
+      </select>
+    </div>
+  }
   <div class="alert alert-primary">
     <label class="fs-2">CVIR Inspection Status</label>
     <h1 class="display-1" [ngClass]="['c_' + (cvir.cvirStatus | lowercase)]">
@@ -181,13 +197,17 @@
     </h1>
   </div>
 
-  <h2 class="alert alert-info" *ngIf="fm.controls.mode.value === modes[0]">
-    {{ fm.controls.mode.value }} | {{ fm.controls.type.value }} | {{ fm.controls.role.value }} |
-    {{ fm.controls.cvorNscTypeChanged.value ? 'CVOR/NSC Type changed' : 'CVOR/NSC Type NOT changed' }}
-  </h2>
-  <h2 class="alert alert-info" *ngIf="fm.controls.mode.value !== modes[0]">
-    {{ fm.controls.mode.value }}
-  </h2>
+  @if (fm.controls.mode.value === modes[0]) {
+    <h2 class="alert alert-info">
+      {{ fm.controls.mode.value }} | {{ fm.controls.type.value }} | {{ fm.controls.role.value }} |
+      {{ fm.controls.cvorNscTypeChanged.value ? 'CVOR/NSC Type changed' : 'CVOR/NSC Type NOT changed' }}
+    </h2>
+  }
+  @if (fm.controls.mode.value !== modes[0]) {
+    <h2 class="alert alert-info">
+      {{ fm.controls.mode.value }}
+    </h2>
+  }
   <table class="table table-hover">
     <thead class="table-dark">
       <tr>
@@ -200,13 +220,17 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let r of outputTable" [ngClass]="{ 'table-active': r[0] }" (click)="onRowClick(r)">
-        <ng-container *ngFor="let c of r; let i = index">
-          <td *ngIf="i" [ngClass]="[i === r.length - 1 || i === r.length - 2 ? 'c_' + (c | lowercase) : '']">
-            {{ c }}
-          </td>
-        </ng-container>
-      </tr>
+      @for (r of outputTable; track r) {
+        <tr [ngClass]="{ 'table-active': r[0] }" (click)="onRowClick(r)">
+          @for (c of r; track c; let i = $index) {
+            @if (i) {
+              <td [ngClass]="[i === r.length - 1 || i === r.length - 2 ? 'c_' + (c | lowercase) : '']">
+                {{ c }}
+              </td>
+            }
+          }
+        </tr>
+      }
     </tbody>
   </table>
 </div>
