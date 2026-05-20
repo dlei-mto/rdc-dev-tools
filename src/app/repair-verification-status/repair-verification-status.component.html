@@ -37,7 +37,6 @@
         <td>{{ r.isOfficerAfter24Hrs }}</td>
         <td>{{ r.currentStatus }}</td>
         <td>{{ r.daysSinceCvirStarted >= 15 ? '>= 15' : '< 15' }}</td>
-        <td>{{ r.j }} {{ r.j === 0 ? 'Pending' : r.j === 1 ? 'Not Received' : 'Received' }}</td>
         <td>{{ r.verificationStatus }} [{{ r.ctrlDisabled ? 'disabled' : 'enabled' }}]</td>
       </tr>
     }
