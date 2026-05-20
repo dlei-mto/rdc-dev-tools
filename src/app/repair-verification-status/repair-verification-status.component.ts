@@ -5,10 +5,9 @@ enum COLS {
   EDIT = 0,
   OTHER_OFFICER = 1,
   OFFICER_AFTER_24HRS = 2,
-  J = 5,
   CURRENT_STATUS = 3,
   DAYS_SINCE_CVIR_STARTED = 4,
-  VERIFICATION_STATUS = 6
+  VERIFICATION_STATUS = 5
 }
 
 @Component({
@@ -24,31 +23,28 @@ export class RepairVerificationStatusComponent {
     { name: 'isEdit', ddl: [true, false], lst: [] },
     { name: 'isOtherOfficer', ddl: [true, false], lst: [] },
     { name: 'isOfficerAfter24Hrs', ddl: [true, false], lst: [] },
-    { name: 'currentStatus', ddl: ['OVERDUE', '~OVERDUE'], lst: [] },
+    { name: 'currentStatus', ddl: ['OVERDUE', 'not OVERDUE'], lst: [] },
     { name: 'daysSinceCvirStarted', ddl: [1, 15], lst: [] },
-    { name: 'Repair Verification Status', ddl: [0, 1, 2], lst: [] },
-    { name: 'Repair Verification Status (control)', ddl: ['Pending', 'Not Received', 'Received'], lst: [] }
+    { name: 'Repair Verification Status', ddl: ['0:Pending', '1:Not Received', '2:Received'], lst: [] }
   ].map(c => ({ ...c, lst: [...c.ddl] }));
 
   private allTbl: any[] = this.cols[COLS.EDIT].ddl.flatMap(a =>
     this.cols[COLS.OTHER_OFFICER].ddl.flatMap(b =>
       this.cols[COLS.OFFICER_AFTER_24HRS].ddl.flatMap(c =>
-        this.cols[COLS.J].ddl.flatMap(d =>
-          this.cols[COLS.CURRENT_STATUS].ddl.flatMap(e =>
-            this.cols[COLS.DAYS_SINCE_CVIR_STARTED].ddl.flatMap(f =>
-              this.cols[COLS.VERIFICATION_STATUS].ddl.map(g => {
-                return {
-                  isEdit: a,
-                  isOtherOfficer: b,
-                  isOfficerAfter24Hrs: c,
-                  j: d,
-                  currentStatus: e,
-                  daysSinceCvirStarted: f,
-                  verificationStatus: g,
-                  ctrlDisabled: null
-                };
-              })
-            )
+        this.cols[COLS.CURRENT_STATUS].ddl.flatMap(e =>
+          this.cols[COLS.DAYS_SINCE_CVIR_STARTED].ddl.flatMap(f =>
+            this.cols[COLS.VERIFICATION_STATUS].ddl.map(g => {
+              return {
+                isEdit: a,
+                isOtherOfficer: b,
+                isOfficerAfter24Hrs: c,
+                j: +g.split(':')[0],
+                currentStatus: e,
+                daysSinceCvirStarted: f,
+                verificationStatus: g.split(':')[1],
+                ctrlDisabled: null
+              };
+            })
           )
         )
       )
@@ -106,10 +102,9 @@ export class RepairVerificationStatusComponent {
           this.cols[COLS.EDIT].lst.includes(r.isEdit) &&
           this.cols[COLS.OTHER_OFFICER].lst.includes(r.isOtherOfficer) &&
           this.cols[COLS.OFFICER_AFTER_24HRS].lst.includes(r.isOfficerAfter24Hrs) &&
-          this.cols[COLS.J].lst.includes(r.j) &&
           this.cols[COLS.CURRENT_STATUS].lst.includes(r.currentStatus) &&
           this.cols[COLS.DAYS_SINCE_CVIR_STARTED].lst.includes(r.daysSinceCvirStarted) &&
-          this.cols[COLS.VERIFICATION_STATUS].lst.includes(r.verificationStatus)
+          this.cols[COLS.VERIFICATION_STATUS].lst.find(v => v.split(':')[1] === r.verificationStatus)
       )
       .map(r => {
         r.ctrlDisabled = this.#logic4notreceived(r);
