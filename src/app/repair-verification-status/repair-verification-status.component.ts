@@ -1,5 +1,7 @@
-import { Component, ElementRef, HostListener, QueryList, ViewChildren } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Component, computed, DestroyRef, ElementRef, HostListener, inject, OnInit, QueryList, signal, ViewChildren } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { startWith } from 'rxjs';
 
 enum COLS {
   EDIT = 0,
@@ -16,7 +18,7 @@ enum COLS {
   styleUrl: './repair-verification-status.component.scss',
   imports: [FormsModule, ReactiveFormsModule]
 })
-export class RepairVerificationStatusComponent {
+export class RepairVerificationStatusComponent implements OnInit {
   @ViewChildren('ddl') ddlMenu!: QueryList<ElementRef>;
 
   cols: { name: string; ddl: any[]; lst: any[] }[] = [
@@ -55,8 +57,68 @@ export class RepairVerificationStatusComponent {
 
   #curMenu: any;
 
-  constructor() {
+  fm = new FormGroup({
+    isCreator: new FormControl(),
+    isCepoAdmin: new FormControl(),
+    isDistrictAdmin: new FormControl(),
+    isMTOAdmin: new FormControl(),
+    allCvir: new FormControl(),
+    modificationType: new FormControl() // lessThan24hrs,greaterThan24hrs
+  });
+
+  #destroy = inject(DestroyRef);
+
+  profile = signal({ isCreator: true, isCepoAdmin: false, isDistrictAdmin: false, isMTOAdmin: false, permissions: [] as string[] });
+  ctx = signal({ modificationType: '', currentStatus: '' });
+  state = computed(() => {
+    const pro = this.profile();
+    const isDistrictAdmin = pro?.isDistrictAdmin && !pro?.isCepoAdmin;
+    const userRole = pro?.isMTOAdmin === true || isDistrictAdmin ? 'Administrator' : 'Officer';
+    const isAdmin = userRole === 'Administrator' ? true : false;
+    const isSuperAdmin = userRole === 'Administrator' && pro?.permissions?.includes('review.allCvir');
+
+    const ctx = this.ctx();
+    const modificationType: string = ctx.modificationType; // greaterThan24hrs
+    const currentStatus: string = ctx.currentStatus;
+
+    // RDC logic
+    const checkIfIsOtherOfficer = (): boolean => {
+      let isOtherOfficer: boolean = !this.profile().isCreator; // this.cvirObject?.cvirHeader?.inspector?.badgeNumber !== this.badgeId ? true : false;
+      isOtherOfficer = userRole === 'Administrator' ? false : isOtherOfficer && userRole === 'Officer';
+      return isOtherOfficer;
+    };
+    const checkIfOfficerAfter24Hrs = (): boolean => {
+      let isOfficerWhoCreatedCvir = pro.isCreator && userRole === 'Officer'; // this.cvirObject?.cvirHeader?.inspector?.badgeNumber === this.badgeId && this.userRole === 'Officer' ? true : false;
+      let officerAllowMod2 =
+        modificationType === 'greaterThan24hrs' && // this.cvir?.cvirInspection?.createTime
+        currentStatus !== 'REJECTED' &&
+        !isAdmin &&
+        isOfficerWhoCreatedCvir;
+      return officerAllowMod2;
+    };
+
+    const isOtherOfficer = checkIfIsOtherOfficer();
+    const isOfficerAfter24Hrs = checkIfOfficerAfter24Hrs();
+
     this.#getTbl();
+
+    return { isDistrictAdmin, userRole, isAdmin, isSuperAdmin, modificationType, currentStatus, isOtherOfficer, isOfficerAfter24Hrs };
+  });
+
+  ngOnInit(): void {
+    this.fm.valueChanges.pipe(startWith(this.fm.value), takeUntilDestroyed(this.#destroy)).subscribe(val => {
+      this.profile.update(user => ({
+        ...user,
+        isCreator: val.isCreator,
+        isCepoAdmin: val.isCepoAdmin,
+        isDistrictAdmin: val.isDistrictAdmin,
+        isMTOAdmin: val.isMTOAdmin,
+        permissions: val.allCvir ? ['review.allCvir'] : []
+      }));
+      this.ctx.update(c => ({ ...c, modificationType: val.modificationType }));
+      // this.#getTbl();
+    });
+    this.fm.patchValue({ isCreator: true, isCepoAdmin: false, isDistrictAdmin: false, isMTOAdmin: false, allCvir: false });
   }
 
   toggleFilter(menu: any) {
