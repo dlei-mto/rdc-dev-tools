@@ -1,1 +1,0 @@
-import{Fa as n}from"./chunk-PYELWR4S.js";var t=class e{static \u0275fac=function(o){return new(o||e)};static \u0275cmp=n({type:e,selectors:[["ng-component"]],decls:0,vars:0,template:function(o,p){},encapsulation:2})};export{t as HomeComponent};

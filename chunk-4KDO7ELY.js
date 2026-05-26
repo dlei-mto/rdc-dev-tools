@@ -1,0 +1,1 @@
+import{Aa as o}from"./chunk-NQEEIZGA.js";var t=class e{static \u0275fac=function(n){return new(n||e)};static \u0275cmp=o({type:e,selectors:[["ng-component"]],decls:0,vars:0,template:function(n,a){},encapsulation:2})};export{t as HomeComponent};
