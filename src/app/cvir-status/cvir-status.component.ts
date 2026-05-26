@@ -408,8 +408,8 @@ export class CvirStatusComponent implements OnInit {
     if (
       this.#auth.isOnlineMode() &&
       ((!this.#trackInputPopulation.cvorNsc.populated && this.#getCvorNSCIdCodeById(cvir?.cvirVehicles[0].cvorTypeVehicle) === 'YES-NUMBER') ||
-        (!this.#trackInputPopulation.driverLicense.populated && this.selectedLevel !== '5' && !cvir?.cvirDriver?.driverLicenceNotAvailable) ||
-        !this.#trackInputPopulation.plates.every(x => x.populated))
+        (!this.#trackInputPopulation.driverLicense.populated && this.selectedLevel !== '5' && !cvir?.cvirDriver?.driverLicenceNotAvailable)) // ||
+      // !this.#trackInputPopulation.plates.every(x => x.populated))
     ) {
       cvir.cvirStatus = this.#statusNewCvirId;
     }
